@@ -1,0 +1,22 @@
+# Qt Creator personal settings
+*.pro.user*
+*.qws
+
+# Build directories and generated output
+build/
+build-*/
+bin/
+debug/
+release/
+Makefile*
+.qmake.stash
+.qmake.cache
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.exe
+*.pdb
+*.so*
+*.dylib
