@@ -1,7 +1,9 @@
 #pragma once
 
-// 函数指针表：这里为了简单，只放一个函数指针。
+// 一张表提供三种功能，传一次就能使用全部功能。
 struct LoggerApi
 {
     void (*Log)(const char *message);
+    void (*Warning)(const char *message);
+    void (*Error)(const char *message);
 };

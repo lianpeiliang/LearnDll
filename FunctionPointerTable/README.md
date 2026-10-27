@@ -13,7 +13,9 @@ B 把日志函数的地址填进表 → 主程序拿到表 → 把表传给 A �
 3. 运行 `Demo`，输出：
 
 ```text
-[Logger B] Hello! Business A is using a function pointer table.
+[INFO] Business A started.
+[WARNING] This is a sample warning.
+[ERROR] This is a sample error.
 ```
 
 程序和两个动态库都在构建目录的 `bin` 下。三个模块使用同一个 Kit 构建，运行时由 Qt Creator 提供 Qt 环境。
@@ -26,16 +28,20 @@ B 把日志函数的地址填进表 → 主程序拿到表 → 把表传给 A �
 struct LoggerApi
 {
     void (*Log)(const char *message);
+    void (*Warning)(const char *message);
+    void (*Error)(const char *message);
 };
 ```
 
-`Log` 是一个变量，保存函数地址。它可以指向“接收 `const char*`、返回 `void`”的函数。这里只放一个函数指针，方便理解；需要更多功能时，可以继续添加成员。
+`Log` 是一个变量，保存函数地址。它可以指向“接收 `const char*`、返回 `void`”的函数。`Warning` 和 `Error` 也是函数指针，分别用于输出警告和错误。
 
 **2. B 把函数地址填进表**：`logger/logger.cpp`
 
 ```cpp
 LoggerApi api;
 api.Log = &PrintLog;
+api.Warning = &PrintWarning;
+api.Error = &PrintError;
 return api;
 ```
 
@@ -53,10 +59,18 @@ DoWork(&api);
 **4. A 通过函数指针调用**：`business/business.cpp`
 
 ```cpp
-api->Log("Hello! Business A is using a function pointer table.");
+api->Log("Business A started.");
+api->Warning("This is a sample warning.");
+api->Error("This is a sample error.");
 ```
 
-这时才真正调用函数，执行的是 B 中的 `PrintLog()`。
+这时才真正调用函数，分别执行 B 中的 `PrintLog()`、`PrintWarning()` 和 `PrintError()`。警告和错误只是演示输出。完整代码还会检查指针是否为空。
+
+## 放在一张表里的好处
+
+主程序只需要一次 `DoWork(&api)`，就把三种能力一起交给 A，不用逐个传入三个函数指针。A 按表中的名字选择功能，具体函数地址由 B 填好。
+
+如果以后换成写文件的实现，只需把表中的函数指针指向新的实现，A 的调用方式仍然相同。这里新增了表成员，需要一起重新编译三个模块。
 
 ## 和接口类示例的区别
 

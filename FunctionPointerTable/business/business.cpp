@@ -2,7 +2,15 @@
 
 void DoWork(const LoggerApi *api)
 {
-    // A 只认识函数指针表，通过其中的地址调用 B 的函数。
-    if (api && api->Log)
-        api->Log("Hello! Business A is using a function pointer table.");
+    if (!api)
+        return;
+
+    // 一次收到整张表，就可以调用三种功能。
+    // 下面只是演示三种输出，不是真的发生了错误。
+    if (api->Log)
+        api->Log("Business A started.");
+    if (api->Warning)
+        api->Warning("This is a sample warning.");
+    if (api->Error)
+        api->Error("This is a sample error.");
 }
