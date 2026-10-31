@@ -8,8 +8,10 @@
 - [接口类](InterfaceClass/README.md)：主程序把 `ILogger*` 传给动态库 A，A 通过接口调用动态库 B 的日志实现。
 - [函数指针表](FunctionPointerTable/README.md)：主程序把 `LoggerApi` 表传给动态库 A，A 通过表中的函数指针调用动态库 B。
 - [回调函数](CallbackFunction/README.md)：业务库 A 把回调函数传给下载库 B，B 完成后调用回调通知 A。
+- [共享数据结构](SharedDataStruct/README.md)：主程序创建共享数据，库 A 修改，库 B 读取。
 
 用 Qt Creator 打开 `ExportedFunInterface/LearnDll.pro`，构建后运行 `Demo`。
 接口类示例则打开 `InterfaceClass/LearnDll.pro`，构建后运行 `Demo`。
 函数指针表示例打开 `FunctionPointerTable/LearnDll.pro`，构建后运行 `Demo`。
 回调函数示例打开 `CallbackFunction/LearnDll.pro`，构建后运行 `Demo`。
+共享数据结构示例打开 `SharedDataStruct/LearnDll.pro`，构建后运行 `Demo`。
